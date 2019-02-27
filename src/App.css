@@ -16,6 +16,9 @@ body {
 .header {
   flex: 0 1 auto;
   display: flex;
+  align-items: center;
+  margin-bottom: 4vh;
+  padding: 20px;
 }
 
 .content {
@@ -49,34 +52,28 @@ body {
 
 /*CSS for components used in both indivicual alarm and alarm list*/
 div.alarm-list button {
-  font-size: 1rem;
+  font-size: 1.5vw;
   padding: 6px;
 }
-div.alarm-list button.selected {
-  font-weight: bold;
-  color: #4487ef;
-}
-div.alarm-list button.unselected {
-  color: dimgray
-}
-div.alarm-list svg.alarm-icon {
-  font-size: 2rem;
-}
-
 div.alarm-item button {
   font-size: 6vw;
   /*padding-right: 3vw;*/
 }
-div.alarm-item button.selected {
+div.alarm-list svg.active-icon {
+  font-size: 3vw;
+}
+div.alarm-item svg.active-icon {
+  font-size: 6vw;
+}
+
+button.selected {
   font-weight: bold;
   color: #4487ef;
 }
-div.alarm-item button.unselected {
+button.unselected {
   color: dimgray
 }
-div.alarm-item svg.alarm-icon {
-  font-size: 6vw;
-}
+
 div.alarm-item button.delete-button svg {
   font-size: 6vw;
   /*padding-left: 3vw;*/

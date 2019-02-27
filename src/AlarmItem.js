@@ -5,6 +5,7 @@ import AlarmActiveIcon from './AlarmActiveIcon.js';
 import SelectedDates from './SelectedDates.js';
 import { IconButton } from '@material-ui/core';
 
+// Need to clean up the css here; mix between styled and inline
 const AlarmDetails = styled.div`
     height: 100%;
     display: flex;
@@ -33,7 +34,7 @@ class AlarmItem extends Component {
     const alarm = this.props.alarm[0];
     return (
       <AlarmDetails className="alarm-item">
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '80%'}}>
+        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '70%'}}>
           <AlarmActiveIcon alarm={alarm} toggleActiveAlarm={this.props.toggleActiveAlarm} />
           <IconButton className="delete-button"><DeleteIcon /></IconButton>
         </div>
@@ -41,7 +42,7 @@ class AlarmItem extends Component {
         <SelectedDates alarm={alarm} toggleSelectedDates={this.props.toggleSelectedDates} />
         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'baseline'}}>
           <AlarmTime>{alarm.time}</AlarmTime>
-          <h2>{alarm.reoccuring ? 'Reoccuring' : ''}</h2>
+          <h1>{alarm.reoccuring ? 'Reoccuring' : ''}</h1>
         </div>
       </AlarmDetails>
     );

@@ -1,0 +1,44 @@
+/*These css are overwritten by material ui css
+  Using withStyles will apply these styles last*/ 
+
+.alarmListGroup {
+    list-style: none;
+    flex: 1 1 auto;
+}
+
+.header-icon {
+    color: white !important;
+    font-size: 4vw !important;
+    min-width: 33px;
+    min-height: 33px;
+}
+
+.settings-button {
+    margin-right: 40px;
+}
+
+.mic-button {
+    width: 7vw !important;
+    height: 7vw !important;
+    min-width: 55px;
+    min-height: 55px;
+    padding: .2em;
+    border-width: 2px !important;
+    border-color: white !important;
+    border-radius: 12px !important;
+    color: white !important;
+    position: relative;
+    bottom: 12px;
+    left: 12px;
+}
+
+.mic-icon {
+    font-size: 6vw !important;
+    min-width: 45px;
+    min-height: 45px;
+}
+
+.mic-input {
+    color: white !important;
+    font-size: 3vw !important;
+}

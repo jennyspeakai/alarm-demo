@@ -9,8 +9,6 @@ class AlarmList extends Component {
   columns = [{
     width: 100,
     Cell: (row) => {
-      // bad thing about this is whole component re-renderes on single toggle change
-      // console.log(row)
       return <AlarmActiveIcon alarm={row.original} toggleActiveAlarm={this.props.toggleActiveAlarm}/>
     }
   },{
@@ -19,13 +17,13 @@ class AlarmList extends Component {
     accessor: 'time',
     width: 200
   },{
-    width: 250,
+    width: 320,
     accessor: 'dates',
     Cell: (row) => {
       return <SelectedDates alarm={row.original} toggleSelectedDates={this.props.toggleSelectedDates} />
     }
   },{
-    width: 175,
+    width: 200,
     accessor: 'reoccuring',
     Cell: (row) => {
       return <div className="reoccuring-cell">
