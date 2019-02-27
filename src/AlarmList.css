@@ -1,0 +1,42 @@
+@import "~react-table/react-table.css";
+
+.ReactTable {
+    border: 2px solid rgba(255,255,255,1.0);
+    width: 90%;
+    height: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 2vh;
+    font-size: 1.5vw;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.ReactTable .rt-tbody .rt-td {
+    height: 10vh;
+    border-right: 2px solid rgba(255,255,255,1.0);
+    cursor: pointer;
+}
+
+.ReactTable .-pagination {
+	border-top: 2px solid rgba(255,255,255,1.0);
+}
+
+.ReactTable .rt-tbody .rt-tr-group {
+	border-bottom: solid 2px rgba(255,255,255,1.0);
+}
+
+.ReactTable .-pagination .-btn {
+    color: black;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.ReactTable .-pagination .-next:hover .-btn,
+.ReactTable .-pagination .-previous:hover .-btn {
+    color: black;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.ReactTable .rt-head .rt-tr {
+    display: none;
+}
