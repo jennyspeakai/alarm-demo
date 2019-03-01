@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 const AlarmActiveIcon = props => {
   const toggleAlarm = (e) => {
     e.stopPropagation();
-    props.toggleActiveAlarm(e.currentTarget.dataset.id);
+    props.toggleActiveAlarm(props.alarm.id);
   }
 
   let alarmIcon = <AlarmOffIcon className="active-icon inactive"/>;

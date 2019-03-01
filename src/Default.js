@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const DefaultText = styled.div`
+const DefaultText = styled.h1`
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     color: white;
     font-size: 4vw;
 `;
-
 
 const Default = props => {
 

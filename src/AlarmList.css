@@ -40,3 +40,7 @@
 .ReactTable .rt-head .rt-tr {
     display: none;
 }
+
+.reoccuring-cell {
+    height: 100%;
+}

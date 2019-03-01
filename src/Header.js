@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 //import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import AlarmIcon from '@material-ui/icons/Alarm';
@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import './HeaderFooter.css';
 
 
-class Header extends Component {
+class Header extends PureComponent {
     render() {
         const path = this.props.location.pathname;
         
@@ -32,15 +32,15 @@ class Header extends Component {
         return (
             <div className="header">
                 <div className="alarmListGroup">
+                    {path !== '/' && <IconButton className="home-button" component={Link} to="/">
+                        <HomeIcon className="header-icon" />
+                    </IconButton>}
                     {path !== '/alarms' && <IconButton component={Link} to="/alarms">
                         <AlarmIcon className="header-icon" />
                         <MoreVertIcon className="header-icon" />
                     </IconButton>}
                 </div>
                 <div className="navButtonGroup">
-                    {path !== '/' && <IconButton className="home-button" component={Link} to="/">
-                        <HomeIcon className="header-icon" />
-                    </IconButton>}
                     <IconButton className="settings-button" component={Link} to="/settings">
                         <SettingsIcon className="header-icon" />
                     </IconButton>

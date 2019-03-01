@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactTable from "react-table";
 import AlarmActiveIcon from './AlarmActiveIcon';
 import SelectedDates from './SelectedDates';
 import "./AlarmList.css"
 
-class AlarmList extends Component {
+class AlarmList extends PureComponent {
   TheadComponent = props => null; // Makes empty header row disappear
   columns = [{
     width: 100,
@@ -26,9 +26,13 @@ class AlarmList extends Component {
     width: 200,
     accessor: 'reoccuring',
     Cell: (row) => {
-      return <div className="reoccuring-cell">
+      const toggleReoccuring = (e) => {
+        e.stopPropagation();
+        this.props.toggleReoccuring(row.original.id);
+      }
+      return <div className="reoccuring-cell" onClick={toggleReoccuring}>
         <span>
-          {row.original.reoccuring ? 'reoccuring' : ''}
+          {row.original.reoccuring ? 'reoccuring' : 'one time'}
         </span>
       </div>
     }
@@ -46,7 +50,9 @@ class AlarmList extends Component {
           })}
           defaultPageSize = {5}
           showPageSizeOptions = {false}
-          minRows = {0} />
+          showPagination = {this.props.alarms.size > 0}
+          minRows = {0}
+          noDataText = 'You currently have no alarms saved' />
       </div>
     );
   }
