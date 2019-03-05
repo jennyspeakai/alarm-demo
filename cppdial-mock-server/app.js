@@ -21,7 +21,7 @@ io.on("connection", socket => {
     emitAllAlarms(socket);
   })
   socket.on('sendTranscript', (transcript) => {
-    getResponseAndEmit(socket, transcript);
+    setTimeout(() => getResponseAndEmit(socket, transcript), 500);  // delay response from typed text
   });
   socket.on("disconnect", () => {
     console.log("Client disconnected");
@@ -39,29 +39,40 @@ const listenAndEmitSpeech = async socket => {
         // this is to similate input coming in a word at at a time
         split.forEach(word => {
             timeout += Math.random() * 1000;
-            setTimeout(() => socket.emit('audio', word), timeout);
+            const audio = {
+                text: word,
+                volume: timeout/1000
+            }
+            setTimeout(() => socket.emit('audio', audio), timeout);
         });
-        setTimeout(() => socket.emit('doneListening'), (split.length * 800) + 500);
-        setTimeout(() => getResponseAndEmit(socket, spoken, randomPick),(split.length * 800) + 1000);
+        setTimeout(() => socket.emit('doneListening'), (split.length * 500) + 1000);  // delay mic turning off
+        setTimeout(() => getResponseAndEmit(socket, spoken, randomPick),(split.length * 700) + 1000);     // pretend to take a while to figure out response
     } catch (error) {
         console.error(`Error: ${error.code}`);
     }
 };
 
 const emitAllAlarms = async socket => {
-    socket.emit('alarmsSuccess', data.alarms)
+    socket.emit('alarmsSuccess', data.alarms);
 }
 
 
 const getResponseAndEmit = async (socket, transcript, index = null) => {
-    console.log(index);
     try {
         let res;
         if(index !== null) {
             res = data.responses[index];
         } else {
-            if (transcript.includes('alarms' && ('show'|'display'|'see'))) {
-                res = data.response[0];
+            if (transcript.includes('alarms' && ('show'||'display'||'see'))) {
+                res = data.responses[0];
+            } else if (transcript.includes('alarms' && ('delete'||'remove'||'clear'))) {
+                res = data.responses[7];
+            } else if (transcript.includes('alarm' && ('show'||'display'||'see') && ('one'||'first'))) {
+                res = data.responses[2];
+            } else if (transcript.includes('alarm' && ('create'||'add'))) {
+                res = data.responses[4];
+            } else if (transcript.includes('Seattle Half Marathon')) {
+                res = data.responses[8];
             } else {
                 res = {
                     action: 'default',
@@ -71,9 +82,6 @@ const getResponseAndEmit = async (socket, transcript, index = null) => {
                 }
             }
         }
-        //console.log(res.data);
-        //socket.emit("request", res.data); // Emitting a new message. It will be consumed by the client
-        //const interval = setInterval(() => getResponseAndEmit(socket), 10000);
         socket.emit('response', res)
     } catch (error) {
         console.error(`Error: ${error.code}`);
