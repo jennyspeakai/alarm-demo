@@ -1,8 +1,30 @@
 html,
 body {
-  height: 100%;
+  width: 100%;
+  height: 100vh;
   position: relative;
   color: white;
+  font-size: 1em;
+}
+h1 { font-size: 2.074em; }
+h2 { font-size: 1.728em; }
+h3 { font-size: 1.44em; }
+h4 { font-size: 1.2em; }
+
+@media only screen and (max-width: 800px) {
+  html {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  html {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 475px) {
+  html {
+    font-size: 8px;
+  }
 }
 
 .app {
@@ -13,35 +35,8 @@ body {
   flex-direction: column;
 }
 
-.header {
-  flex: 0 1 auto;
-  display: flex;
-  align-items: center;
-  margin-bottom: 4vh;
-  padding: 20px;
-}
-
 .content {
   flex: 1 1 auto;
-}
-
-.footer {
-  flex: 0 1 auto;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  padding-top: 20px;
-  align-items: flex-end;
-}
-
-.input-group {
-  flex: 1 1 auto;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  padding: 10px 30px;
-  justify-content: center;
-  text-align: center;
-  font-size: 2.5vw;
 }
 
 @media screen and (max-width: 600px) {
@@ -56,14 +51,14 @@ div.alarm-list button {
   padding: 6px;
 }
 div.alarm-item button {
-  font-size: 6vw;
-  /*padding-right: 3vw;*/
+  font-size: 4vw;
+  margin: 0 1rem;
 }
 div.alarm-list svg.active-icon {
   font-size: 3vw;
 }
 div.alarm-item svg.active-icon {
-  font-size: 6vw;
+  font-size: 5vw;
 }
 
 button.selected {
@@ -83,10 +78,10 @@ div.alarm-item button.delete-button svg:hover {
   color: red;
 }
 
-button.delete-button {
+/*button.delete-button {
   flex: auto;
   justify-content: flex-end;
-}
+}*/
 
 svg.inactive {
     color: lightslategray;

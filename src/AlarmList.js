@@ -5,6 +5,7 @@ import SelectedDates from './SelectedDates';
 import "./AlarmList.css"
 
 class AlarmList extends PureComponent {
+  componentWillMount
   TheadComponent = props => null; // Makes empty header row disappear
   columns = [{
     width: 100,
@@ -50,9 +51,11 @@ class AlarmList extends PureComponent {
           })}
           defaultPageSize = {5}
           showPageSizeOptions = {false}
-          showPagination = {this.props.alarms.size > 0}
+          showPagination = {this.props.alarms.length > 0}
           minRows = {0}
-          noDataText = 'You currently have no alarms saved' />
+          style={this.props.alarms.length < 1 ? {border: 'none'} : {}}
+          noDataText = 'You currently have no alarms saved'
+          loadingText = 'Loading alarms...' />
       </div>
     );
   }

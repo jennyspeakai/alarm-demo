@@ -1,5 +1,23 @@
 /*These css are overwritten by material ui css
-  Using withStyles will apply these styles last*/ 
+  Using withStyles will apply these styles last*/
+
+/*Not sure this is doing anything*/
+.mic-button {
+    --audio-volume: .7;
+    --audio-speed: 1s;
+}
+
+.header {
+    margin-bottom: 4vh;
+    padding: 2vh;
+  }
+  
+  .footer {
+    bottom: 0;
+    width: 100%;
+    padding-top: 10vh;
+    margin-bottom: 2vh;
+  }
 
 .alarmListGroup {
     list-style: none;
@@ -17,7 +35,18 @@
     margin-right: 40px;
 }
 
+.input-group {
+    flex: 1 1 auto;
+    margin-left: 3vw;
+    padding: 10px 30px;
+    justify-content: center;
+    text-align: flex-start;
+    font-size: 2.5vw;
+    height: 100%;
+  }
+
 .mic-button {
+    flex-shrink: 0;
     width: 7vw !important;
     height: 7vw !important;
     min-width: 55px;
@@ -25,15 +54,46 @@
     padding: .2em;
     border-width: 3px !important;
     border-color: white !important;
-    border-radius: 20px !important;
+    border-radius: 25% !important;
     color: white !important;
     position: relative;
     bottom: 12px;
     left: 12px;
 }
+.mic-button:disabled {
+    background: rgb(21, 205, 230);
+    background: rgba(21, 205, 230, var(--audio-volume));
+    animation: pulse var(--audio-speed) infinite;
+}
+
+@-webkit-keyframes pulse {
+    0% {
+      -webkit-background: rgba(21, 205, 230, var(--audio-volume));
+    }
+    70% {
+        -webkit-background: rgba(21, 205, 230, 0);
+    }
+    100% {
+        -webkit-background: rgba(21, 205, 230, 0);
+    }
+  }
+  @keyframes pulse {
+    0% {
+      -moz-background: rgba(21, 205, 230, var(--audio-volume));
+      background: rgba(21, 205, 230, var(--audio-volume));
+    }
+    70% {
+        -moz-background: rgba(21, 205, 230, 0);
+        background: rgba(21, 205, 230, 0);
+    }
+    100% {
+        -moz-background: rgba(21, 205, 230, 0);
+        background: rgba(21, 205, 230, 0);
+    }
+}
 
 .mic-icon {
-    font-size: 6vw !important;
+    font-size: 5vw !important;
     min-width: 45px;
     min-height: 45px;
 }
@@ -41,4 +101,5 @@
 .mic-input {
     color: white !important;
     font-size: 3vw !important;
+    border: none;
 }

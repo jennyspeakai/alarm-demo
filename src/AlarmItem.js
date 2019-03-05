@@ -1,29 +1,18 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { IconButton, Grid } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AlarmActiveIcon from './AlarmActiveIcon.js';
 import SelectedDates from './SelectedDates.js';
-import { IconButton } from '@material-ui/core';
 
 // Need to clean up the css here; mix between styled and inline
-const AlarmDetails = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
 const AlarmName = styled.h1`
-    font-size: 4vw;
-    color: white;
-    padding: .3em;
+    font-size: 3em;
     margin-top: 0;
 `;
 
 const AlarmTime = styled.h2`
-    font-size: 4vw;
-    color: white;
+    font-size: 3em;
     padding: .3em;
     margin: 0 .5em;
 `;
@@ -38,37 +27,38 @@ class AlarmItem extends PureComponent {
       reoccuring: false,
       active: false
   }
-  /*componentWillMount() {
-    this.setState({...this.props.alarm[0]});
-  }*/
+
+  // if alarm is empty, redirect to alarms
+  componentWillMount() {
+    this.setState({...this.props.alarm});
+  }
   componentWillReceiveProps(nextProps) {
-    this.setState({...nextProps.alarm[0]});
+    this.setState({...nextProps.alarm});
   }
   
   deleteAlarm = () => {
-    this.props.removeAlarm(this.props.alarm[0].id);
+    this.props.removeAlarm(this.props.alarm.id);
   }
   toggleReoccuring = () => {
-    this.props.toggleReoccuring(this.props.alarm[0].id);
+    this.props.toggleReoccuring(this.props.alarm.id);
   }
 
   render() {
     const alarm = this.state;
-    console.log(alarm);
 
     return (
-      <AlarmDetails className="alarm-item">
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '70%'}}>
+      <Grid container className="alarm-item" direction="column" justify="space-around" alignItems="center">
+        <Grid container direction="row" alignItems="center" justify="space-around">
           <AlarmActiveIcon alarm={alarm} toggleActiveAlarm={this.props.toggleActiveAlarm} />
           <IconButton className="delete-button" onClick={this.deleteAlarm}><DeleteIcon /></IconButton>
-        </div>
+        </Grid>
         <AlarmName>{alarm.name}</AlarmName>
         <SelectedDates alarm={alarm} toggleSelectedDates={this.props.toggleSelectedDates} />
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'baseline'}}>
+        <Grid container direction="row" alignItems="baseline" justify="center">
           <AlarmTime>{alarm.time}</AlarmTime>
           <h1 style={alarm.reoccuring ? {color: 'white', cursor: 'pointer'} : {color: '#2f2f2f', cursor: 'pointer'}} onClick={this.toggleReoccuring}>Reoccuring</h1>
-        </div>
-      </AlarmDetails>
+        </Grid>
+      </Grid>
     );
   }
 }

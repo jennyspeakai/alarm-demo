@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import SpeechRecognition from 'react-speech-recognition'
+import { Grid } from '@material-ui/core';
 import MicIcon from '@material-ui/icons/Mic';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
@@ -23,11 +24,23 @@ const options = {
 // consider making statelesss
 class Footer extends PureComponent {
     state = {
-        wakeWordActive: false
+        wakeWordActive: false,
+        transcript: '',
+        volume: 0,
+        input: null
     }
 
-    componentWillReceiveProps(newProps) {
-        this.setState({wakeWordActive: newProps.wakeWordActive})
+    componentDidMount() {
+        this.setState({input: <Input className="mic-input" disableUnderline={true} fullWidth={true} onKeyPress={this.onTextInput} style={{height: '100%'}}/>});
+    }
+
+    componentWillReceiveProps() {
+        this.setState({
+            wakeWordActive: this.props.wakeWordActive,
+            transcript: this.props.audio,
+            volume: this.props.volume,
+            input: this.state.transcript && <span className="mic-input">{this.state.transcript}</span>
+        });
     }
 
     activateWakeWord = () => {
@@ -38,11 +51,20 @@ class Footer extends PureComponent {
     }
 
     onTextInput = (e) => {
-        this.setState({input: e.target.value});
+        const text = e.target.value;
+        if(this.state.wakeWordActive) {
+            this.setState({
+                wakeWordActive: true
+            });
+        }
         if(e.key === 'Enter') {
+            console.log(e.target.value);
+            this.setState({
+                transcript: text,
+                wakeWordActive: false
+            });
             this.props.sendTranscription(e.target.value);
-            this.props.stopListening();
-            this.setState({wakeWordActive: false});
+            //this.props.stopListening();
         }
     }
 
@@ -53,27 +75,25 @@ class Footer extends PureComponent {
         }
     }
 
-    render() {
-        /*const { finalTranscription, startListening, browserSupportsSpeechRecognition } = this.props;
-        
-        if (!browserSupportsSpeechRecognition) {
-            return null;
-        }*/
-
-        let input = <Input className="mic-input" disableUnderline={true} fullWidth={true} onKeyPress={this.onTextInput}></Input>;
-        if (this.props.audio) {
-            input = <span className="mic-input">{this.props.audio}</span>;
+    focusInput = () => {
+        if (!this.state.wakeWordActive) {
+            this.setState({
+                transcript: '',
+                input: <Input className="mic-input" disableUnderline={true} fullWidth={true} onKeyPress={this.onTextInput} />
+            });
         }
+    }
 
+    render() {
         return (
-            <div className="footer">
-                <Button variant="outlined" disabled={this.props.wakeWordActive} className="mic-button" onClick={this.props.startListening}>
+            <Grid container direction="row" justify="flex-start" alignItems="flex-end" className="footer" style={{flexWrap: 'nowrap'}}>
+                <Button variant="outlined" disabled={this.state.wakeWordActive} audio-volume={this.state.volume} audio-speed={this.state.volume} className="mic-button" onClick={this.props.startListening}>
                     <MicIcon className="mic-icon" />
                 </Button>
-                <div className="input-group">
-                    {input}
+                <div className="input-group" onClick={this.focusInput}>
+                    {this.state.input}
                 </div>
-            </div>
+            </Grid>
         );
     }
 }
