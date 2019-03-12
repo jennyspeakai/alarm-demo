@@ -15,11 +15,12 @@ import './App.css';
 let socket;// = socketIOClient('http://127.0.0.1:3001');
 const url = 'http://127.0.0.1:3001';
 
+// TTS
 const speech = new Speech();
 if(!speech.hasBrowserSupport()) {
     console.log('speech synthesis not supported');
 }
-// Have these settings in the settings page
+// ToDo: put tts settings in the settings page
 speech.init({
     voice: 'Google UK English Female'
 });
@@ -29,10 +30,12 @@ class App extends Component {
         audio:  '',
         volume: 0,
         tts: '',
+        followup: false,
         wakeWordActive: false,
         alarms: []
     }
 
+    // gets the initial list of alarms
     componentWillMount() {
         socket = socketIOClient(url);
         socket.emit('getAlarms');
@@ -42,24 +45,24 @@ class App extends Component {
         })
     }
 
-    /*componentDidMount() {
-        socket.on('ttsResponse', data => {
-            this.setState({tts: data});
-            this.props.history.push('/response');
-        });
-    }*/
-
-    // concider putting these in an api component
+    // callback function to send typed transcription to the backend
     sendTranscription = (transcript) => {
         this.setState({
             audio: transcript,
             wakeWordActive: false
         });
         socket = socketIOClient(url);
-        socket.emit('sendTranscript', transcript);
+        if (this.state.followup) {
+            socket.emit('followup');
+        } else {
+            socket.emit('sendTranscript', transcript);
+        }
+        // need to support context? (or handled by backend)
         socket.on('response', this.doAction);
     }
 
+    // callback function to start listening to audio
+    // (gets a random utterance from the mock backend)
     startListening = () => {
         this.setState({
             wakeWordActive: true,
@@ -68,7 +71,13 @@ class App extends Component {
         });
         socket = socketIOClient(url);
         //socket.connect();
-        socket.emit('listening');
+        if (this.state.followup) {
+            socket.emit('followup');
+        } else if (this.props.location.pathname === '/alarms') {
+            socket.emit('listening', 1)
+        } else {
+            socket.emit('listening');
+        }
         socket.on('audio', data => {
             this.setState({
                 audio: `${this.state.audio} ${data.text}`,
@@ -81,8 +90,13 @@ class App extends Component {
         })
     }
 
+    // do the action specified by the backend
+    // (this would be the returned command)
     doAction = (data) => {
-        this.setState({tts: data.tts})
+        this.setState({
+            tts: data.tts,
+            followup: data.followup
+        })
         switch(data.action) {
             case 'delete_alarm':    // not sure if data will return the deleted item or what remains
             case 'delete_alarms':
@@ -97,24 +111,39 @@ class App extends Component {
             case 'show_alarm':
                 this.props.history.push(`/alarm/${data.data.id}`);
                 break;
+            case 'update_alarm':
+                this.setState({
+                    alarms: this.state.alarms.map((alarm) => {
+                        if (alarm.id === data.data.id) {
+                            return data.data;
+                        }
+                        return alarm;
+                    })
+                })
+                break;
             case 'default':
             default:
                 this.props.history.push('/response');
                 break;
-                // need to disconnect to prevent duplication of responses?
         }
-        // if followup is true; don't disconnect?
         speech.speak({text: this.state.tts});
-        if (data.followup) {
-            socket.emit('followup', data.data.id);
-            socket.on('response', this.doAction);
-            socket.on('doneListening', () => {
-                this.setState({wakeWordActive: false});
-            })
-        }
+        // Bug?: needed to disconnect to prevent duplication of responses
         socket.disconnect();
     }
 
+    // updates the name of the selected alarm+
+    updateName = (name, index) => {
+        this.setState({
+            alarms: this.state.alarms.map((alarm) => {
+                if (alarm.id === index) {
+                    return {...alarm, name};
+                }
+                return alarm;
+            })
+        })
+    }
+
+    // toggles the selected alarm to be on or off
     toggleActiveAlarm = (index) => {
         this.setState({
             alarms: this.state.alarms.map((alarm) => {
@@ -126,6 +155,7 @@ class App extends Component {
         })
     }
 
+    // toggles the active dates for the selected alarm
     toggleSelectedDates = (index, day) => {
         this.setState({
             alarms: this.state.alarms.map((alarm) => {
@@ -137,6 +167,7 @@ class App extends Component {
         })
     }
 
+    // toggles the occurance of the selected alarm
     toggleReoccuring = (index) => {
         this.setState({
             alarms: this.state.alarms.map((alarm) => {
@@ -148,6 +179,7 @@ class App extends Component {
         })
     }
 
+    // removes the selected alarm from the alarm list
     removeAlarm = (index) => {
         this.setState({
             alarms: this.state.alarms.filter(alarm => alarm.id !== index)
@@ -155,13 +187,14 @@ class App extends Component {
         this.props.history.push('/alarms');
     }
 
+    // ToDo: add clickable button to allow adding alarms
+    // adds a new alarm to the alarm list
     addAlarm = (alarm) => {
         this.setState({
             alarms: this.state.alarms.push(alarm)
         })
     }
 
-    // display next upcoming alarm
     render() {
         return (
         <div className="app">
@@ -175,13 +208,15 @@ class App extends Component {
                             toggleActiveAlarm={this.toggleActiveAlarm}
                             toggleSelectedDates={this.toggleSelectedDates}
                             toggleReoccuring={this.toggleReoccuring}
-                            removeAlarm={this.removeAlarm} />} />
+                            removeAlarm={this.removeAlarm}
+                            updateName={this.updateName} />} />
                         <Route exact path="/alarms" render={(props) =>
                             <AlarmList {...props} alarms={this.state.alarms}
                             toggleActiveAlarm={this.toggleActiveAlarm}
                             toggleSelectedDates={this.toggleSelectedDates}
                             toggleReoccuring={this.toggleReoccuring}
-                            removeAlarm={this.removeAlarm} />} />
+                            removeAlarm={this.removeAlarm}
+                            updateName={this.updateName} />} />
                         <Route path="/settings" component={Settings} />
                         <Route path="/response" render={(props) =>
                             <Default {...props} response={this.state.tts} />} />

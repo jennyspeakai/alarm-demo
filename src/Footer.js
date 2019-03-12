@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import SpeechRecognition from 'react-speech-recognition'
+//import PropTypes from 'prop-types';
+//import SpeechRecognition from 'react-speech-recognition'
 import { Grid } from '@material-ui/core';
 import MicIcon from '@material-ui/icons/Mic';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import './HeaderFooter.css';
 
-const propTypes = {
+/*const propTypes = {
     // Props injected by SpeechRecognition
     startListening: PropTypes.func,
     stopListening: PropTypes.func,
@@ -19,7 +19,7 @@ const propTypes = {
 
 const options = {
     autoStart: false
-}
+}*/
 
 // consider making statelesss
 class Footer extends PureComponent {
@@ -30,10 +30,12 @@ class Footer extends PureComponent {
         input: null
     }
 
+    // Initially create an empty input component for user typed input
     componentDidMount() {
         this.setState({input: <Input className="mic-input" disableUnderline={true} fullWidth={true} onKeyPress={this.onTextInput} style={{height: '100%'}}/>});
     }
 
+    // Change the input component to be a span when spoken input recieved
     componentWillReceiveProps() {
         this.setState({
             wakeWordActive: this.props.wakeWordActive,
@@ -43,13 +45,7 @@ class Footer extends PureComponent {
         });
     }
 
-    activateWakeWord = () => {
-        //this.propsTypes.resetTranscript();
-        //this.propsTypes.startListening();
-        console.log(this.props.transcript)
-        this.setState({wakeWordActive: true});
-    }
-
+    // Callback function for text input change
     onTextInput = (e) => {
         const text = e.target.value;
         if(this.state.wakeWordActive) {
@@ -58,7 +54,6 @@ class Footer extends PureComponent {
             });
         }
         if(e.key === 'Enter') {
-            console.log(e.target.value);
             this.setState({
                 transcript: text,
                 wakeWordActive: false
@@ -68,13 +63,15 @@ class Footer extends PureComponent {
         }
     }
 
-    onVoiceInput = (e) => {
-        console.log(e.target.value);
+    // Callback function for voice input
+    // (not currently used)
+    /*onVoiceInput = (e) => {
         if (e.target.value.includes('end')) {
             this.setState({wakeWordActive: false})
         }
-    }
+    }*/
 
+    // sets the focus onto the input component
     focusInput = () => {
         if (!this.state.wakeWordActive) {
             this.setState({
@@ -98,6 +95,6 @@ class Footer extends PureComponent {
     }
 }
 
-Footer.propTypes = propTypes;
+//Footer.propTypes = propTypes;
 
-export default SpeechRecognition(options)(Footer);
+export default Footer; //SpeechRecognition(options)(Footer);

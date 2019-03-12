@@ -8,8 +8,8 @@ const DefaultText = styled.h1`
     font-size: 4vw;
 `;
 
+// Displays the returned tts response by defualt
 const Default = props => {
-
   return (
       <DefaultText>{props.response}</DefaultText>
   );

@@ -1,13 +1,39 @@
 data = {
     audio: [
-        'See all my alarms',
-        'Create an alarm for 9 Sunday morning',
-        //'Delete all of my alarms',
-        'See my first alarm',
-        'Create an alarm every Monday, Wednesday, and Friday called Team Standup',
-        'Add a reoccuring alarm Monday through Friday for 2pm called take a break',
-        'Go to my alarm called soccer game',
-        'Show me my 8 pm alarm'
+        [
+            'See all my alarms',
+            'Create an alarm for 9 Sunday morning',
+            //'Delete all of my alarms',
+            'See my first alarm',
+            'Create an alarm every Monday, Wednesday, and Friday called Team Standup',
+            'Add a reoccuring alarm Monday through Friday for 2pm called take a break',
+            'Go to my alarm called soccer game',
+            'Show me my 8 pm alarm'
+        ],
+        [
+            'Show me the second one',
+            'Enable the first one',
+            'Switch the occurance of the third one',
+            'Change the time of my weekday wakeup to 6am',
+            'Change my go to bed alarm to monday through friday'
+        ]
+    ],
+
+    followup: [
+        {
+            id: 4,
+            text: 'fun run',
+            response: 12
+        },
+        {
+            id: 5,
+            text: '11 am',
+            response: 13
+        },
+        /*{
+            text: 'Duplicate this alarm and set it for 10:30 am',
+            response: 14
+        }*/
     ],
 
     responses: [
@@ -88,37 +114,115 @@ data = {
             tts: 'I could not find an 8pm alarm',
             followup: false
         },
-        {
+        /*{
             action: 'delete_alarms',
             data: [],
             tts: 'I have deleted all of your alarms',
             followup: false
+        },*/
+        {
+            action: 'show_alarm',
+            data: {
+                id: 1,
+                name: 'Pick up kids',
+                dates: ['M', 'W', 'F'],
+                time: '5:30 pm',
+                reoccuring: true,
+                active: false
+            },
+            tts: 'Here is your second alarm',
+            followup: false
         },
         {
-            action: 'create_alarm',
+            action: 'update_alarm',
+            data: {
+                id: 1,
+                name: 'Pick up kids',
+                dates: ['M', 'W', 'F'],
+                time: '5:30 pm',
+                reoccuring: true,
+                active: true
+            },
+            tts: 'Your alarm called Pick up kids is now active',
+            followup: false
+        },
+        {
+            action: 'update_alarm',
+            data: {
+                id: 2,
+                name: 'Soccer game',
+                dates: ['T'],
+                time: '7:45 pm',
+                reoccuring: true,
+                active: true
+            },
+            tts: 'Your alarm called Soccer game is now reoccuring',
+            followup: false
+        },
+        {
+            action: 'update_alarm',
+            data: {
+                id: 0,
+                name: 'Weekday Wake Up',
+                dates: ['M', 'T', 'W', 'Th', 'F'],
+                time: '6:00 am',
+                reoccuring: true,
+                active: true
+            },
+            tts: 'Okay, I\'ve changed the time of your Weekday wake up alarm to 6 am',
+            followup: false
+        },
+        {
+            action: 'update_alarm',
+            data: {
+                id: 3,
+                name: 'Go to Bed',
+                dates: ['M', 'T', 'W', 'Th', 'F'],
+                time: '11:00 pm',
+                reoccuring: true,
+                active: true
+            },
+            tts: 'I\'ve changed the dates for your Go to Bed alarm to Monday through Friday',
+            followup: false
+        },
+        {
+            action: 'update_alarm',
             data: {
                 id: 4,
-                name: 'Seattle Half Marathon',
+                name: 'Fun Run',
                 dates: ['S'],
                 time: '9:00 am',
                 reoccuring: false,
                 active: false
             },
-            tts: 'Okay, I have changed the name to Seattle Half Marathon',
-            followup: true
+            tts: 'Okay, I have set the name to Fun Run',
+            followup: false
         },
         {
-            action: 'create_alarm',
+            action: 'update_alarm',
             data: {
                 id: 5,
                 name: 'Team Standup',
                 dates: ['M','W','F'],
-                time: '',
+                time: '11 am',
                 reoccuring: true,
                 active: false
             },
-            tts: 'I have created an alarm called Team Standup for Monday, Wednesday, and Friday. What time would you like this set?',
-            followup: true
+            tts: 'Your Team Standup alarm is now set for 11 am',
+            followup: false
+        },
+        {
+            action: 'update_alarm',
+            data: {
+                id: 7,
+                name: 'take a break',
+                dates: ['M', 'T', 'W', 'Th', 'F'],
+                time: '10:30 am',
+                reoccuring: true,
+                active: true
+            },
+            tts: 'Okay, I have created a new alarm called take a break for Monday through Friday at 11 am',
+            followup: false
         }
     ],
 

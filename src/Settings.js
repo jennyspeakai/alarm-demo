@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Settings extends Component {
   render() {
     // Temporary placeholder page
-    // Will pull out in-line stylings when creating actual settings page
+    // ToDo: pull out in-line stylings when creating actual settings page
     return (
       <div>
         <h1 style={{textAlign: 'center', fontSize: '3vw'}}>Settings</h1>

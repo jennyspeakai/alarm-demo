@@ -5,8 +5,9 @@ import SelectedDates from './SelectedDates';
 import "./AlarmList.css"
 
 class AlarmList extends PureComponent {
-  componentWillMount
   TheadComponent = props => null; // Makes empty header row disappear
+  
+  // Columns of the ReactTable
   columns = [{
     width: 100,
     Cell: (row) => {
@@ -14,6 +15,23 @@ class AlarmList extends PureComponent {
     }
   },{
     accessor: 'name',
+    Cell: (row) => {
+      const changeName = (e) => {
+        const newName = e.currentTarget.innerHTML;
+        this.props.updateName(newName, row.original.id);
+      }
+    
+      const gainEditFocus = (e) => {
+        e.stopPropagation();
+      }
+    
+      const loseEditFocus = (e) => {
+        if(e.key === 'Enter') {
+          e.target.blur();
+        }
+      }
+      return <div suppressContentEditableWarning={true} contentEditable={true} onClick={gainEditFocus} onBlur={changeName} onKeyDown={loseEditFocus}>{row.original.name}</div>
+    }
   },{
     accessor: 'time',
     width: 200
